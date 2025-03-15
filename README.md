@@ -1,5 +1,4 @@
-# Dynamic Routing System
-
+# Dynamic Routing System || E-Commerce Recommendation System || Reverse Logistics || Object detection at assembly level
 ## Overview
 The *Dynamic Routing System* leverages real-time data to recommend efficient routes for vehicles. It integrates multiple APIs and uses advanced algorithms to optimize routing decisions based on traffic, weather, air quality, and vehicle-specific data. 
 
@@ -30,35 +29,7 @@ The *Dynamic Routing System* leverages real-time data to recommend efficient rou
   - Flask/FastAPI (Web Framework for API Deployment)
 
 ---
-## Setup and Installation
 
-1. *Clone the Repository*:
-   bash
-   git clone https://github.com/yourusername/fedex.git
-   cd dynamic-routing-system
-   
-
-2. *Create a Virtual Environment*:
-   bash
-   python -m venv venv
-   source venv/bin/activate   # On Windows: venv\Scripts\activate
-   
-
-3. *Install Dependencies*:
-   bash
-   pip install -r requirements.txt
-   
-
-4. *Set Up API Keys*:
-   Create a .env file in the root directory and add your API keys:
-   env
-   TOMTOM_API_KEY=your_tomtom_api_key
-   WEATHERBIT=your_weather_api_key
-   OSRM_URL=your_osrm_server_url
-   AQICN_API_KEY=your_aqicn_api_key
-   
-
----
 ## Usage
 
 1. *Run the Application*:
