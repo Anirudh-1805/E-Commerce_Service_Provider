@@ -109,10 +109,7 @@ This project is licensed under the [GNU General Public License v3.0](LICENSE).
 
 ---
 
-## Contact
-For questions or feedback, please reach out to:
-- *Anirudhan R||Hemprasad AC||Raghavan R*
-- Email: anirudh2005.1805@gmail.com||hemprasad.ac2023@vitstudent.ac.in||raghavan.r2023@vitstudent.ac.in
+
 
 ---
 
