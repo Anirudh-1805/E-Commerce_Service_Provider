@@ -1,0 +1,25 @@
+ItemID,ItemName,Category,Quantity,UnitPrice,StorageCapacity(kg),Destination,ExpiryDate
+ITEM1,shrimp,Food,389,31.13,28,Bangalore,2025-02-20
+ITEM2,almonds,Food,389,89.76,11,Lucknow,2025-04-03
+ITEM3,avocado,Dairy,25,13.9,29,Jaipur,2025-02-21
+ITEM4,herbal coffee,Snacks,23,58.32,91,Jaipur,
+ITEM5,tea,Dairy,239,60.98,0,Bangalore,2025-03-05
+ITEM6,milk,Dairy,152,19.77,97,Kolkata,2025-03-12
+ITEM7,banana,Food,204,14.19,44,Lucknow,2025-02-24
+ITEM8,apple,Grocery,423,9.13,58,Jaipur,
+ITEM9,cabbage,Food,50,57.44,80,Lucknow,2025-03-15
+ITEM10,mango,Grocery,305,23.27,8,Delhi,
+ITEM11,water,Beverage,405,32.49,10,Hyderabad,
+ITEM12,chocolate,Food,152,48.07,46,Bangalore,2025-03-15
+ITEM13,fish,Grocery,191,24.9,34,Mumbai,
+ITEM14,spice,Snacks,335,21.26,93,Hyderabad,
+ITEM15,oil,Beverage,246,41.05,81,Jaipur,
+ITEM16,sugarcane,Beverage,360,35.81,98,Delhi,
+ITEM17,candy,Beverage,430,8.05,40,Ahmedabad,
+ITEM18,jam,Grocery,43,25.04,72,Kolkata,
+ITEM19,nuts,Beverage,345,52.43,82,Pune,
+ITEM20,chips,Beverage,145,18.26,95,Jaipur,
+ITEM21,rice,Snacks,144,75.97,54,Lucknow,
+ITEM22,cereal,Dairy,122,99.75,17,Jaipur,2025-03-14
+ITEM23,onion,Dairy,396,9.48,14,Bangalore,2025-02-24
+ITEM24,carrot,Beverage,415,69.65,76,Mumbai,
