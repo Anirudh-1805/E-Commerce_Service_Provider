@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apriori Algorithm</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        h1 {
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        .data {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .data th, .data td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .data th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Apriori Algorithm</h1>
+        
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <label for="file">Upload CSV File:</label>
+            <input type="file" id="file" name="file" accept=".csv" required><br><br>
+
+            <label for="min_support">Min Support:</label>
+            <input type="number" step="0.001" id="min_support" name="min_support" value="0.003" required><br><br>
+
+            <label for="min_confidence">Min Confidence:</label>
+            <input type="number" step="0.01" id="min_confidence" name="min_confidence" value="0.2" required><br><br>
+
+            <label for="min_lift">Min Lift:</label>
+            <input type="number" step="0.1" id="min_lift" name="min_lift" value="3" required><br><br>
+
+            <label for="min_length">Min Length:</label>
+            <input type="number" id="min_length" name="min_length" value="2" required><br><br>
+
+            <label for="max_length">Max Length:</label>
+            <input type="number" id="max_length" name="max_length" value="2" required><br><br>
+
+            <button type="submit">Run Apriori</button>
+        </form>
+        
+        {% if frequent_itemsets %}
+            <h2>Frequent Itemsets:</h2>
+            <div class="data">{{ frequent_itemsets|safe }}</div>
+        {% endif %}
+        
+        {% if association_rules %}
+            <h2>Association Rules:</h2>
+            <div class="data">{{ association_rules|safe }}</div>
+        {% endif %}
+    </div>
+</body>
+</html>
