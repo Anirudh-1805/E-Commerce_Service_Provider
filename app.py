@@ -10,7 +10,7 @@ import base64
 import folium
 from geopy.geocoders import Nominatim
 from geopy.extra.rate_limiter import RateLimiter
-from flask import Flask, request, render_template, redirect, url_for,jsonify
+from flask import Flask, request, render_template, redirect, send_from_directory, url_for,jsonify
 from polyline import decode
 import numpy as np
 import pandas as pd
@@ -21,8 +21,9 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from apyori import apriori  # This is the correct import for the Apriori algorithm
+import os
 
-CSV_PATH = "fedex-main\combined_inventory_dataset.csv"
+CSV_PATH = "C:/Users/aniru/Downloads/fedex-main (6)/fedex-main (5)/fedex-main (4)/fedex-main/fedex-main/combined_inventory_dataset.csv"
 def load_data():
     """Load and validate dataset"""
     try:
@@ -79,7 +80,7 @@ def allocate_vehicles(df):
     return results
 
 # Load your trained LSTM model
-model = RNNModel.load(r'C:\Users\aniru\Downloads\fedex-main (6)\fedex-main (5)\fedex-main (4)\fedex-main\fedex-main\lstm_model_weights.pth')
+model = RNNModel.load(r'C:/Users/aniru/Downloads/fedex-main (6)/fedex-main (5)/fedex-main (4)/fedex-main/fedex-main/lstm_model_weights.pth')
 
 # Load scalers (assuming you saved them separately)
 scaler1 = Scaler()  # For target variable
@@ -559,6 +560,7 @@ def calculate_co2_emissions_air(distance):
     return emissions
 
 
+
 # Haversine formula to calculate the great-circle distance between two points
 def haversine(coords1,coords2):
     R = 6371  # Earth radius in kilometers
@@ -696,7 +698,7 @@ app = Flask(__name__)
 
 @app.route('/plan_route', methods=['POST'])
 def plan_route():
-    with app.app_context():
+    try:
         start_city = request.form['startLocation']
         end_city = request.form['endLocation']
         cargo_weight = int(request.form['cargoWeight'])  # Convert to integer
@@ -705,13 +707,14 @@ def plan_route():
 
         # Vehicle details at start
         vehicle_input = request.form['vehicle']
-        num_gears_start = request.form['numGears']
-        transmission_type_start = request.form['transmissionType']
-        engine_size_start = request.form['engineSize']
-        fuel_type_start = request.form['fuelType']
-        cylinders_start = request.form['cylinders']
-        fuel_consumption_start = request.form['fuelConsumption']
-        air_travel_start = request.form['airTravel']
+        num_gears_start = 4
+        transmission_type_start = 'A'
+        engine_size_start =2.5
+        fuel_type_start = 'X'
+        cylinders_start = 4
+        fuel_consumption_start =8
+        air_travel_start = 'No'
+
 
 
         # Collect stops
@@ -719,27 +722,20 @@ def plan_route():
         stop_index = 0
         while f'stopLocation{stop_index}' in request.form:
             stop_location = request.form[f'stopLocation{stop_index}']
-            ret_drop = request.form[f'ret_drop{stop_index}']
+            
             drop_off_weight = request.form[f'dropOffWeight{stop_index}']
-            vehic_input = request.form[f'VehicleInput{stop_index}']
-            num_gears = request.form[f'numGears{stop_index}']
-            transmission_type = request.form[f'transmissionType{stop_index}']
-            engine_size = request.form[f'engineSize{stop_index}']
-            fuel_type = request.form[f'fuelType{stop_index}']
-            cylinders = request.form[f'cylinders{stop_index}']
-            fuel_consumption = request.form[f'fuelConsumption{stop_index}']
 
             stops.append({
                 'location': stop_location,
-                'ret_drop': ret_drop,
+                
                 'drop_off_weight': drop_off_weight,
-                'vehicle_input': vehic_input,
-                'num_gears': num_gears,
-                'transmission_type': transmission_type,
-                'engine_size': engine_size,
-                'fuel_type': fuel_type,
-                'cylinders': cylinders,
-                'fuel_consumption': fuel_consumption
+                'vehicle_input': vehicle_input,
+                'num_gears': num_gears_start,
+                'transmission_type': transmission_type_start,
+                'engine_size': engine_size_start,
+                'fuel_type': fuel_type_start,
+                'cylinders': cylinders_start,
+                'fuel_consumption': fuel_consumption_start
             })
             stop_index += 1
 
@@ -748,24 +744,37 @@ def plan_route():
                         num_gears_start, transmission_type_start, 
                         engine_size_start, fuel_type_start, 
                         cylinders_start, fuel_consumption_start, 
-                        air_travel_start,ret_drop)
+                        air_travel_start)
 
         if route_map:
-            # Render the map as HTML
-            return render_template('final_page.html', map=Markup(route_map.repr_html()))
+            route_map_file = "route_with_traffic_and_weather.html"
+            route_map.save(route_map_file)
+            return jsonify(success=True, file=route_map_file)
         else:
-            return "Error generating route", 500
+            return jsonify(success=False, message="Error generating route"), 500
+    except Exception as e:
+        return jsonify(success=False, message=f"Error generating route: {str(e)}"), 500
+
 def final_page():
     return render_template('final_page.html')
+
+
+
 @app.route('/')
 def index():
     return render_template('about.html')
+@app.route('/forecast')
+def fore_cast():
+    return render_template('filegen.html')
+@app.route('/home')
+def home():
+    return render_template('home.html')
 @app.route("/route")
 def route_page():
     return render_template("routes.html")
 # Main function
 
-def main(start_city, end_city, stop_loc, vehicle_input,stops_data, cargo_weight, num_gears, transmission_type, engine_size, fuel_type, cylinders, fuel_consumption_comb, air_travel_start,ret_drop):
+def main(start_city, end_city, stop_loc, vehicle_input,stops_data, cargo_weight, num_gears, transmission_type, engine_size, fuel_type, cylinders, fuel_consumption_comb, air_travel_start):
     # Input start, destination, and optional stops
     html_content="""<html>
     <head><title>Outputs</title></head>
@@ -829,16 +838,7 @@ def main(start_city, end_city, stop_loc, vehicle_input,stops_data, cargo_weight,
                         stop_name = stops_data[N-1].get("location", "Unknown")
                         drop_off = stops_data[N-1].get('drop_off_weight', 0)
 
-                        try:
-                            ret_drop = ret_drop
-                            if(ret_drop=="return"):
-                                idropoff1 = int(drop_off)
-                                icargo_weight += idropoff1
-                            else:
-                                idropoff = int(drop_off)
-                                icargo_weight -= idropoff
-                        except ValueError:
-                            idropoff = 0
+                        
 
                         vehicle_type_road = stops_data['vehicle_input']
 
@@ -872,9 +872,6 @@ def main(start_city, end_city, stop_loc, vehicle_input,stops_data, cargo_weight,
                     if n==1:
                       n+=1"""
                     road_time=0.0
-
-
-                  
 
                     print(f"Route {idx + 1} for Segment {i + 1}:")
                     segment_distance = geodesic(segment_start, segment_end).km
@@ -1078,9 +1075,7 @@ def main(start_city, end_city, stop_loc, vehicle_input,stops_data, cargo_weight,
 
 
 
-        # Save and display the complete map
-        route_map.save("route_with_traffic_and_weather.html")
-        print("Route map with traffic and weather saved as route_with_traffic_and_weather.html")
+        return route_map
 
     else:
         print("Error in getting coordinates for cities or stops.")
@@ -1090,7 +1085,7 @@ def main(start_city, end_city, stop_loc, vehicle_input,stops_data, cargo_weight,
 
     print("HTML file has been generated.")
 
-@app.route('/forecast', methods=['POST'])
+@app.route('/forecast')
 def forecast():
     try:
         # Get historical data from CSV file
@@ -1136,8 +1131,9 @@ def generate_report():
     except Exception as e:
         return render_template('error.html', error_message=str(e))
 
+    
 
-predictive_model = joblib.load(r'fedex-main\trained_model-2.pkl')
+predictive_model = joblib.load(r'C:/Users/aniru/Downloads/fedex-main (6)/fedex-main (5)/fedex-main (4)/fedex-main/fedex-main/trained_model-2.pkl')
 
 # Failure Type mapping
 failure_type_map = {
@@ -1148,6 +1144,11 @@ failure_type_map = {
     4: 'Tool Wear Failure',
     5: 'Random Failures'
 }
+
+@app.route('/route_map/<path:filename>')
+def serve_route_map(filename):
+    return send_from_directory(os.getcwd(), filename)
+
 @app.route('/predictive_maintenance')
 def predictive_maintenance():
     return render_template('pm.html')
@@ -1175,6 +1176,7 @@ def predict():
         'failure_status': 'Failure' if failure_status == 1 else 'No Failure',
         'failure_type': failure_type
     })
+
 
 @app.route('/apriori')
 def index_():
