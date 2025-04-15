@@ -1,137 +1,604 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-bs-theme="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link rel="stylesheet" href="./mstyle.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartRoute Pro - Intelligent Logistics Optimization</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2EC4B6;
+            --secondary-color: #CBF3F0;
+            --accent-color: #FF9F1C;
+            --dark-1: #0a192f;
+            --dark-2: #172a45;
+        }
+
+        body {
+            background-color: var(--dark-1);
+            color: var(--secondary-color);
+            overflow-x: hidden;
+        }
+
+        .nav-glass {
+            background: rgba(11, 25, 49, 0.8) !important;
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(46, 196, 182, 0.1);
+        }
+
+        .hero-section {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--dark-1) 30%, var(--dark-2));
+            z-index: -1;
+        }
+
+        .feature-card {
+            background: rgba(23, 42, 69, 0.6);
+            border-radius: 15px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(46, 196, 182, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(46, 196, 182, 0.1);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(46,196,182,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(45deg);
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .text-accent {
+          color: var(--accent-color);
+        }
+
+        .feature-card:hover i {
+            filter: drop-shadow(0 0 6px rgba(255, 159, 28, 0.5));
+            transform: scale(1.1);
+            transition: all 0.3s ease;
+        }
+
+
+        .gradient-text {
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .roadmap-step {
+            position: relative;
+            padding-left: 2rem;
+            border-left: 2px solid var(--primary-color);
+            margin-left: 1rem;
+        }
+
+        .roadmap-step::before {
+            content: '';
+            position: absolute;
+            left: -0.7rem;
+            top: 0;
+            width: 1.2rem;
+            height: 1.2rem;
+            background: var(--primary-color);
+            border-radius: 50%;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating {
+            animation: float 4s ease-in-out infinite;
+        }
+    </style>
 </head>
-
 <body>
+
+<!-- Header -->
+<header class="header fixed-top nav-glass">
+    <div class="container">
+        <nav class="d-flex flex-wrap justify-content-center py-3">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-signpost-split me-2" viewBox="0 0 16 16">
+                    <path d="M7 7V1.414a1 1 0 0 1 2 0V2h5a1 1 0 0 1 .8.4l.975 1.3a.5.5 0 0 1 0 .6L14.8 5.6a1 1 0 0 1-.8.4H9v10H7v-5H2a1 1 0 0 1-.8-.4L.225 9.3a.5.5 0 0 1 0-.6L1.2 7.4A1 1 0 0 1 2 7h5zm1 3V8H2l-.75 1L2 10h6zm0-5h6l.75-1L14 3H8z"/>
+                </svg>
+                <span class="fs-4 fw-bold gradient-text">SmartRoute Pro</span>
+            </a>
+            <ul class="nav nav-pills align-items-center">
+                <li class="nav-item"><a href="./about.html" class="nav-link active"><i class="fas fa-home me-2"></i>Home</a></li>
+                <li class="nav-item"><a href="./route" class="nav-link"><i class="fas fa-route me-2"></i>Routes</a></li>
+                <li class="nav-item"><a href="#contact" class="nav-link"><i class="fas fa-envelope me-2"></i>Contact</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-cubes me-2"></i>Modules
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="./home"><i class="fas fa-warehouse me-2"></i>Warehouse</a></li>
+                      <li><a class="dropdown-item" href="./predictive_maintenance"><i class="fas fa-tools me-2"></i>Maintenance</a></li>
+                      <li><a class="dropdown-item" href="./apriori"><i class="fas fa-project-diagram me-2"></i>Apriori</a></li>
+                      <li><a class="dropdown-item" href="./forecast"><i class="fas fa-chart-line me-2"></i>Forecast</a></li>
+
+                  </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="particles" id="particles"></div>
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-lg-8" data-aos="fade-right">
+                <h1 class="display-3 fw-bold mb-4">Transform Your <span class="gradient-text">Logistics Network</span></h1>
+                <p class="lead fs-4 mb-5">AI-powered route optimization with real-time emission tracking and predictive analytics</p>
+                <button class="btn btn-lg px-5 py-3 btn-glow" style="background: var(--accent-color);">
+                    Start Optimization <i class="fas fa-rocket ms-2"></i>
+                </button>
+            </div>
+            <div class="col-lg-4" data-aos="fade-left">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgMjQgMjQiPgogICAgPHBhdGggZmlsbD0iIzJFQzRCNiIgZD0iTTEyIDBDNS4zNzMgMCAwIDUuMzczIDAgMTJzNS4zNzMgMTIgMTIgMTIgMTItNS4zNzMgMTItMTJTMTguNjI3IDAgMTIgMHptMCAyMmMtNS41MjMgMC0xMC00LjQ3Ny0xMC0xMFM2LjQ3NyAyIDEyIDJzMTAgNC40NzcgMTAgMTAtNC40NzcgMTAtMTAgMTB6Ii8+CiAgICA8cGF0aCBmaWxsPSIjRkY5RjFDIiBkPSJNMTIgNWwtLjU0My0uMDM0Yy0uMTY3LjAxMS0uMzM0LjAyOS0uNS4wNTJMMTEgNS4xVjJIOXYzdjEuMDgxQTggOCAwIDAgMCA0IDEyYTggOCAwIDAgMCAxNiAwYTggOCAwIDAgMC03LTcuOTE5VjJoLTIvdjN6Ii8+CiAgICA8cGF0aCBmaWxsPSIjMkVDNEI2IiBkPSJNMTIgMTBhMiAyIDAgMSAxIDAtNCAyIDIgMCAwIDEgMCA0eiIvPgo8L3N2Zz4=" 
+                     class="img-fluid floating" alt="Optimization Illustration">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5" id="features">
   <div class="container">
-    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-        <span class="fs-4">Dynamic Route Optimization and Emission Reduction
-          System</span>
-      </a>
-      <ul class="nav nav-pills">
-        <li class="nav-item"><a href="./about.html" class="nav-link active custom-home" aria-current="page">Home</a></li>
-        <li class="nav-item"><a href="./route" class="nav-link" style="color: rgb(118, 194, 118);">Routes</a></li>
-        <li class="nav-item"><a href="#contact-us" class="nav-link" style="color: rgb(118, 194, 118);">Contact us</a></li>
-        <li class="nav-item"><a href="./report" class="nav-link" style="color: rgb(118, 194, 118);">Warehouse Management </a></li>
-        <li class="nav-item"><a href="./predictive_maintenance"class="nav-link" style="color: rgb(118, 194, 118);">Predictive Maintainance</a></li>
-        <li class="nav-item"><a href="./apriori"class="nav-link" style="color: rgb(118, 194, 118);>Apriori</a></li>
-        <li class="nav-item"><a href="/forecast"class="nav-link" style="color: rgb(118, 194, 118);>Forecast</a></li>
-      </ul>
-    </header>
-  </div>
-
-  <div class="content-wrapper">
-    <!-- Carousel (with opacity and behind content) -->
-    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-      </div>
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img src="../static/images/first.png" class="d-block w-100" alt="Dynamic Image">
-          
-        </div>
-        <div class="carousel-item">
-          <img src="../static/images/second.png" class="d-block w-100" alt="Dynamic Image">
-        </div>
-        <div class="carousel-item">
-          <img src="../static/images/third.png" class="d-block w-100" alt="Dynamic Image">
-          
-        </div>
-      </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
+    <div class="text-center mb-5" data-aos="fade-up">
+      <h2 class="display-5 fw-bold gradient-text">Platform Features</h2>
+      <p class="text-muted">Explore the cutting-edge capabilities that power SmartRoute Pro</p>
     </div>
 
-    <main class="px-3 main-content">
-      <h1 class="d-flex flex-wrap justify-content-center py-5">Our Services.</h1>
-      <p class="lead">At Our Company, we provide intelligent route optimization solutions for cargo and logistics. Our platform allows users to seamlessly input source and destination details, specify cargo weight, and add optional stop points for partial deliveries. By leveraging advanced algorithms, we generate the most efficient delivery routes, helping businesses minimize fuel costs, reduce transit time, and maximize productivity. Whether managing a single shipment or planning multi-stop deliveries, SmartCargo ensures streamlined logistics and real-time route visualization, making cargo transportation smarter, faster, and more cost-effective.</p>
-      <p class="lead">
-        <a href="./routes.html" class="btn btn-lg btn-light fw-bold border-black bg-white" id="go-button">Go to Routes</a>
-      </p>
-    </main>
+    <div class="row g-4">
+
+      <!-- AI Optimization Engine -->
+      <div class="col-md-4" data-aos="zoom-in">
+        <div class="feature-card p-4 h-100 text-center">
+          <div class="mb-3 text-accent">
+            <i class="bi bi-cpu-fill fs-1 text-accent floating"></i>
+          </div>
+          <h4 class="mb-2 gradient-text">Smart Emission Monitoring with Weather-Adaptive Routing</h4>
+          <p class="text-muted">Analyzes and reduces carbon emissions by suggesting sustainable alternatives in real time.Also Leverages Weatherbit and AQICN APIs to navigate around storms, smog, and other hazards.</p>
+        </div>
+      </div>
+
+      <!-- Real-Time Traffic Integration -->
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
+        <div class="feature-card p-4 h-100 text-center">
+          <div class="mb-3 text-accent">
+            <i class="bi bi-geo-alt-fill fs-1 text-accent floating"></i>
+          </div>
+          <h4 class="mb-2 gradient-text">Live Traffic Integration</h4>
+          <p class="text-muted">Reroutes dynamically using TomTom, OSRM and Weatherbit APIs to generate a route which avoids congestion and reroutes it when there is any weathe inconvenience .</p>
+        </div>
+      </div>
+
+      <!-- Smart Emission Monitoring -->
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
+        <div class="feature-card p-4 h-100 text-center">
+          <div class="mb-3 text-accent">
+            <i class="bi bi-cloud-sun-fill fs-1 text-accent floating"></i>
+          </div>
+          <h4 class="mb-2 gradient-text">Advanced AI Demand Forecasting</h4>
+          <p class="text-muted">Leverage our LSTM neural network technology to predict demand patterns with remarkable precision. Get actionable 30-day projections to optimize inventory levels and resource allocation decisions.</p>
+        </div>
+      </div>
+
+      <!-- Predictive Maintenance -->
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
+        <div class="feature-card p-4 h-100 text-center">
+          <div class="mb-3 text-accent">
+            <i class="bi bi-wrench-adjustable-circle-fill fs-1 text-accent floating"></i>
+          </div>
+          <h4 class="mb-2 gradient-text">Predictive Maintenance</h4>
+          <p class="text-muted">AI-driven analytics detect potential issues early to minimize breakdowns and increase uptime.</p>
+        </div>
+      </div>
+
+      <!-- Dynamic Cargo Distribution -->
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="400">
+        <div class="feature-card p-4 h-100 text-center">
+          <div class="mb-3 text-accent">
+            <i class="bi bi-truck-front-fill fs-1 text-accent floating"></i>
+          </div>
+          <h4 class="mb-2 gradient-text">Dynamic Cargo Distribution</h4>
+          <p class="text-muted">Adjusts loading and delivery schedules dynamically based on drop locations and weight limits.</p>
+        </div>
+      </div>
+
+      <!-- Weather-Adapted Routing -->
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="500">
+        <div class="feature-card p-4 h-100 text-center">
+          <div class="mb-3 text-accent">
+            <i class="bi bi-lightning-charge-fill fs-1 text-accent floating"></i>
+          </div>
+          <h4 class="mb-2 gradient-text">Intelligent Inventory Validation</h4>
+          <p class="text-muted">Seamlessly import and verify your inventory data with automatic validation of critical fields. Ensure complete data integrity with error detection that identifies missing columns and format issues.</p>
+        </div>
+      </div>
+
+    </div>
   </div>
+</section>
 
-  <div class="container px-4 py-5" id="featured-3">
-    <h2 class="pb-2 border-bottom">Features</h2>
-    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
-      <div class="feature col">
-        <div class="feature-icon d-inline-flex align-items-center justify-content-center bg-light-green bg-gradient fs-2 mb-3">
-          <img src="../static/images/sym1.png" class="img-fluid" alt="Dynamic Image" style="width: 50px; height: 50px;">
-          
+
+<!-- Testimonials Section -->
+<section class="py-5" style="background-color: var(--dark-2);">
+  <div class="container">
+    <h2 class="text-center mb-5 gradient-text" data-aos="fade-up">What Professionals Say</h2>
+    <div class="row g-4">
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="feature-card p-4 h-100">
+          <p class="fst-italic text-muted">"SmartRoute Pro revolutionized our delivery planning. We've seen over 30% reduction in fuel costs."</p>
+          <div class="d-flex align-items-center mt-4">
+            <img src="https://i.pravatar.cc/60?img=12" alt="Reviewer 1" class="rounded-circle me-3" width="50" height="50">
+            <div>
+              <h6 class="mb-0 gradient-text">Kalyan Sudarsan</h6>
+              <small class="text-muted">Logistics Manager, GreenFleet Inc.</small>
+            </div>
+          </div>
         </div>
-        <h3 class="fs-2 text-body-emphasis">Route Optimization with Stop Management</h3>
-        <p>Our platform calculates the most efficient route based on the input source, destination, and cargo weight. Users can add multiple stop points where partial cargo can be dropped, ensuring optimized delivery paths that reduce fuel consumption and time.</p>
-
       </div>
-      <div class="feature col">
-        <div class="feature-icon d-inline-flex align-items-center justify-content-center bg-light-green bg-gradient fs-2 mb-3">
-          <img src="../static/images/sym2.png" class="img-fluid" alt="Dynamic Image" style="width: 50px; height: 50px;">
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="feature-card p-4 h-100">
+          <p class="fst-italic text-muted">"Their predictive maintenance module caught 2 major issues before they happened. Highly recommend!"</p>
+          <div class="d-flex align-items-center mt-4">
+            <img src="https://i.pravatar.cc/60?img=47" alt="Reviewer 2" class="rounded-circle me-3" width="50" height="50">
+            <div>
+              <h6 class="mb-0 gradient-text">Rishwanth J</h6>
+              <small class="text-muted">Fleet Head, TransNova</small>
+            </div>
+          </div>
         </div>
-        <h3 class="fs-2 text-body-emphasis"> Interactive Map Visualization</h3>
-        <p>Once the route is generated, users can view a detailed map showcasing the optimized path. This interactive interface allows users to easily track stop points, distances, and estimated arrival times, providing full visibility over the transportation process.</p>
-
       </div>
-      <div class="feature col">
-        <div class="feature-icon d-inline-flex align-items-center justify-content-center bg-light-green bg-gradient fs-2 mb-3">
-          <img src="../static/images/sym3.png" class="img-fluid" alt="Dynamic Image" style="width: 50px; height: 50px;">
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="feature-card p-4 h-100">
+          <p class="fst-italic text-muted">"The real-time weather routing saved our fleet during unexpected storms. A must-have system."</p>
+          <div class="d-flex align-items-center mt-4">
+            <img src="https://i.pravatar.cc/60?img=33" alt="Reviewer 3" class="rounded-circle me-3" width="50" height="50">
+            <div>
+              <h6 class="mb-0 gradient-text">Anirudhan R</h6>
+              <small class="text-muted">Operations Lead, SkyHaul Logistics</small>
+            </div>
+          </div>
         </div>
-        <h3 class="fs-2 text-body-emphasis">Dynamic Cargo Weight Distribution</h3>
-        <p>SmartCargo allows users to manage cargo distribution across multiple destinations. By entering the weight to be dropped at each stop, the system recalculates and adjusts the route dynamically, ensuring balanced loads and efficient vehicle usage throughout the journey.</p>
-
       </div>
     </div>
   </div>
+</section>
 
-  <!-- Footer -->
- <!-- Footer -->
-<div class="container">
-  <footer class="py-3 my-4" id="contact-us">
-    <div class="d-flex justify-content-between align-items-center">
-      <h3 class="px-4">Let's talk</h3>
-      <p class="px-3 text-body-emphasis" style="font-family:Verdana, Geneva, Tahoma, sans-serif;"><b>📧Email: </b>support@smartcargo.com <br><b>📞Phone no.: </b> 1800-123-456</p>
+
+<!-- Stats Section -->
+<section class="py-5 bg-dark-2">
+  <div class="container">
+    <h2 class="text-center mb-5 gradient-text" data-aos="fade-up">Impact Metrics</h2>
+    <div class="row text-center g-5">
+      
+      <!-- Fuel Cost Reduction -->
+      <div class="col-md-3" data-aos="fade-up">
+        <div class="stat-number" data-count="30">20-25%</div>
+        <p>Reduction in Fuel Costs</p>
+      </div>
+
+      <!-- Faster Deliveries -->
+      <div class="col-md-3" data-aos="fade-up" data-aos-delay="100">
+        <div class="stat-number" data-count="25">35-40%</div>
+        <p>Missed Deliveries or Refund</p>
+      </div>
+
+      <!-- Emission Decrease -->
+      <div class="col-md-3" data-aos="fade-up" data-aos-delay="200">
+        <div class="stat-number" data-count="40">25-30%</div>
+        <p>Reduction in Carbon Emissions</p>
+      </div>
+
+      <!-- Maintenance Downtime -->
+      <div class="col-md-3" data-aos="fade-up" data-aos-delay="300">
+        <div class="stat-number" data-count="15">80-85%</div>
+        <p>Reduction in Software Licensing</p>
+      </div>
+
     </div>
-    <p>🔄 Optimize Your Delivery Routes Now!
-      Contact us Now and
-      let us handle the rest!</p>
-    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-      <li class="nav-item"><a href="./about.html" class="nav-link px-2 text-body-secondary">About us</a></li>
-      <li class="nav-item"><a href="./routes.html" class="nav-link px-2 text-body-secondary">Routes</a></li>
-      <li class="nav-item"><a href="#contact-us" class="nav-link px-2 text-body-secondary">Contact us</a></li>
-    </ul>
-    <p class="text-center text-body-secondary">© 2025 Company, Inc</p>
-  </footer> 
-</div>
+  </div>
+</section>
 
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var myCarousel = new bootstrap.Carousel(document.getElementById('carouselExampleIndicators'), {
-        interval: 5000,
-        wrap: true,
-        keyboard: true
-      });
+<!-- Roadmap Section -->
+<section class="py-5">
+  <div class="container">
+    <h2 class="text-center mb-5 gradient-text" data-aos="fade-up">Development Roadmap</h2>
+    <div class="row g-4">
+
+      <!-- Q3 2024 -->
+      <div class="col-md-6" data-aos="fade-right">
+        <div class="roadmap-step p-4">
+          <h4>Q3 2024</h4>
+          <p>Real-time Traffic & Weather Data Integration</p>
+          <div class="progress mt-3">
+            <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q4 2024 -->
+      <div class="col-md-6" data-aos="fade-left">
+        <div class="roadmap-step p-4">
+          <h4>Q4 2024</h4>
+          <p>AI-based Route Optimization & Emission Reporting</p>
+          <div class="progress mt-3">
+            <div class="progress-bar bg-warning" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q1 2025 -->
+      <div class="col-md-6" data-aos="fade-right">
+        <div class="roadmap-step p-4">
+          <h4>Q1 2025</h4>
+          <p>Predictive Maintenance with Sensor & Usage Data</p>
+          <div class="progress mt-3">
+            <div class="progress-bar bg-info" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q2 2025 -->
+      <div class="col-md-6" data-aos="fade-left">
+        <div class="roadmap-step p-4">
+          <h4>Q2 2025</h4>
+          <p>Dynamic Cargo Allocation & Warehouse Integration</p>
+          <div class="progress mt-3">
+            <div class="progress-bar bg-secondary" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q3 2025 -->
+      <div class="col-md-6" data-aos="fade-right">
+        <div class="roadmap-step p-4">
+          <h4>Q3 2025</h4>
+          <p>Mobile App for Real-Time Driver Navigation & Alerts</p>
+          <div class="progress mt-3">
+            <div class="progress-bar bg-danger" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q4 2025 -->
+      <div class="col-md-6" data-aos="fade-left">
+        <div class="roadmap-step p-4">
+          <h4>Q4 2025</h4>
+          <p>Fleet-Wide Emission Benchmarking & Sustainability Reports</p>
+          <div class="progress mt-3">
+            <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- Enhanced Footer -->
+<footer class="py-5 bg-dark-2 text-light border-top border-secondary-subtle">
+  <div class="container">
+    <div class="row g-5">
+      <!-- Brand & Social -->
+      <div class="col-md-4">
+        <h4 class="mb-3 gradient-text">SmartRoute Pro</h4>
+        <p class="text-muted">Revolutionizing logistics with smart routing, predictive insights, and emission-conscious decisions.</p>
+        <div class="social-links mt-3">
+          <a href="#" class="text-secondary me-3" aria-label="LinkedIn">
+            <i class="fab fa-linkedin fa-xl hover-opacity"></i>
+          </a>
+          <a href="#" class="text-secondary me-3" aria-label="GitHub">
+            <i class="fab fa-github fa-xl hover-opacity"></i>
+          </a>
+          <a href="#" class="text-secondary me-3" aria-label="Twitter">
+            <i class="fab fa-x-twitter fa-xl hover-opacity"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Useful Links -->
+      <div class="col-md-4">
+        <h5 class="mb-3">Quick Links</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="./about.html" class="text-decoration-none text-secondary">About</a></li>
+          <li class="mb-2"><a href="./route" class="text-decoration-none text-secondary">Routes</a></li>
+          <li class="mb-2"><a href="./predictive_maintenance" class="text-decoration-none text-secondary">Predictive Maintenance</a></li>
+          <li class="mb-2"><a href="./apriori" class="text-decoration-none text-secondary">Apriori Module</a></li>
+          <li class="mb-2"><a href="#contact" class="text-decoration-none text-secondary">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="col-md-4">
+        <h5 class="mb-3">Contact Us</h5>
+        <ul class="list-unstyled">
+          <li class="mb-3"><i class="fas fa-envelope me-2"></i><a href="mailto:support@smartroute.com" class="text-secondary text-decoration-none">support@smartroute.com</a></li>
+          <li class="mb-3"><i class="fas fa-phone me-2"></i><a href="tel:+18005550199" class="text-secondary text-decoration-none">+91 8122769325</a></li>
+          <li><i class="fas fa-map-marker-alt me-2"></i><span class="text-secondary">Chennai, India</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="border-secondary-subtle mt-5">
+    <div class="text-center text-muted small">
+      © 2024 SmartRoute Pro. All rights reserved. | Built with 🚀 in India.
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tsparticles@2.3.4/tsparticles.bundle.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tsparticles@2.3.4/tsparticles.bundle.min.js"></script> 
+<script>
+  javascript:
+document.addEventListener('DOMContentLoaded', function() {
+    // AOS Initialization
+    AOS.init({
+        duration: 1000,
+        once: true,
+        easing: 'ease-in-out-quad'
     });
-  </script>
-</body>
 
-</html>
+    // Particles.js Configuration
+    particlesJS('particles', {
+        particles: {
+            number: { value: 80, density: { enable: true, value_area: 800 } },
+            color: { value: '#2EC4B6' },
+            shape: { type: 'circle' },
+            opacity: { value: 0.5, random: false },
+            size: { value: 3, random: true },
+            line_linked: {
+                enable: true,
+                distance: 150,
+                color: '#2EC4B6',
+                opacity: 0.4,
+                width: 1
+            },
+            move: {
+                enable: true,
+                speed: 6,
+                direction: 'none',
+                random: false,
+                straight: false,
+                out_mode: 'out',
+                bounce: false
+            }
+        },
+        interactivity: {
+            detect_on: 'canvas',
+            events: {
+                onhover: { enable: true, mode: 'repulse' },
+                onclick: { enable: true, mode: 'push' },
+                resize: true
+            }
+        },
+        retina_detect: true
+    });
+
+    // Animated Number Counter
+    const animateNumbers = () => {
+        const counters = document.querySelectorAll('.stat-number');
+        const speed = 200;
+
+        counters.forEach(counter => {
+            const updateCount = () => {
+                const target = +counter.getAttribute('data-count');
+                const count = +counter.innerText;
+                const inc = target / speed;
+
+                if(count < target) {
+                    counter.innerText = Math.ceil(count + inc);
+                    setTimeout(updateCount, 1);
+                } else {
+                    counter.innerText = target + '%';
+                }
+            }
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        updateCount();
+                        observer.unobserve(counter);
+                    }
+                });
+            });
+
+            observer.observe(counter);
+        });
+    }
+    animateNumbers();
+
+    // Smooth Scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    // Progress Bar Animation
+    const progressBars = document.querySelectorAll('.progress-bar');
+    progressBars.forEach(bar => {
+        const width = bar.getAttribute('aria-valuenow') + '%';
+        bar.style.width = width;
+    });
+
+    // Floating Animation Controller
+    const floatingElements = document.querySelectorAll('.floating');
+    floatingElements.forEach(element => {
+        element.style.animation = `float 4s ease-in-out infinite`;
+    });
+
+    // Navbar Scroll Effect
+    window.addEventListener('scroll', () => {
+        const header = document.querySelector('.header');
+        if(window.scrollY > 100) {
+            header.style.backdropFilter = 'blur(15px)';
+            header.style.backgroundColor = 'rgba(11, 25, 49, 0.95)';
+        } else {
+            header.style.backdropFilter = 'blur(10px)';
+            header.style.backgroundColor = 'rgba(11, 25, 49, 0.8)';
+        }
+    });
+
+    // Tooltip Initialization
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => 
+        new bootstrap.Tooltip(tooltipTriggerEl)
+    );
+});
+</script> 
 
