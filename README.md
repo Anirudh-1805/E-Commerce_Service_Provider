@@ -21,11 +21,28 @@ This project started as a real-time **Routing Optimization System** during the F
 
 ---
 
-## 🧱 Architecture Overview
+### 🧱 Architecture Overview
 
-<pre> +-------------------------+ | User Interface (UI) | +-----------+-------------+ | v +-----------------------+------------------------+ | Route & Logistics Intelligence Core | | (RL Engine + Rule-Based Scheduler Logic) | +-----------------------+------------------------+ | +-------------------------------+-------------------------------+ | | | v v v +----------------+ +----------------------+ +-------------------------------+ | Traffic API | | Weather API | | Warehouse DB & Scheduling | | (TomTom/OSRM) | | (Weatherbit/AQICN) | | (Inventory, Forecasting, etc) | +----------------+ +----------------------+ +-------------------------------+ </pre>
+```
+                          +-------------------------+
+                          |   User Interface (UI)   |
+                          +-----------+-------------+
+                                      |
+                                      v
+              +-----------------------+------------------------+
+              |   Route & Logistics Intelligence Core         |
+              |  (RL Engine + Rule-Based Scheduler Logic)     |
+              +-----------------------+------------------------+
+                                      |
+      +-------------------------------+-------------------------------+
+      |                               |                               |
+      v                               v                               v
++----------------+         +----------------------+        +-------------------------------+
+|   Traffic API  |         |     Weather API      |        | Warehouse DB & Scheduling     |
+|  (TomTom/OSRM) |         | (Weatherbit/AQICN)   |        | (Inventory, Forecasting, etc) |
++----------------+         +----------------------+        +-------------------------------+
+```
 
----
 
 ## 🔍 Key Features
 
