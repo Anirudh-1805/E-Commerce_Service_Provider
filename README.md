@@ -101,12 +101,6 @@ This project started as a real-time **Routing Optimization System** during the F
 
 > **Note:** This repo is modular and API key based. You’ll need API credentials for Weatherbit, TomTom, and AQICN.
 
-### 🔧 Setup Instructions
-
-git clone https://github.com/<your-username>/logistics-optimization-system.git
-cd logistics-optimization-system
-pip install -r requirements.txt
-
 ---
 
 ## License
