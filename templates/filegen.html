@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartRoute Pro - Predictive Maintenance Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Add jsPDF and html2canvas libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #2EC4B6;
+            --secondary-color: #CBF3F0;
+            --accent-color: #FF9F1C;
+            --dark-1: #0a192f;
+            --dark-2: #172a45;
+        }
+
+        body {
+            background-color: var(--dark-1);
+            color: var(--secondary-color);
+            overflow-x: hidden;
+        }
+
+        .nav-glass {
+            background: rgba(11, 25, 49, 0.8) !important;
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(46, 196, 182, 0.1);
+        }
+
+        .hero-section {
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-container {
+            background: rgba(23, 42, 69, 0.6);
+            border-radius: 15px;
+            padding: 3rem;
+            border: 1px solid rgba(46, 196, 182, 0.1);
+            box-shadow: 0 10px 30px rgba(46, 196, 182, 0.1);
+        }
+
+        .file-upload {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .file-upload-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 1.5rem;
+            border: 2px dashed var(--primary-color);
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-label:hover {
+            background: rgba(46, 196, 182, 0.1);
+        }
+
+        .report-container {
+            background: rgba(23, 42, 69, 0.6);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border: 1px solid var(--primary-color);
+            display: none;
+        }
+
+        .processing-container {
+            background: rgba(23, 42, 69, 0.6);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border: 1px solid var(--accent-color);
+            text-align: center;
+            display: none;
+        }
+
+        .status-message {
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem 0;
+            font-size: 1.1rem;
+        }
+
+        .progress {
+            height: 10px;
+            background-color: rgba(23, 42, 69, 0.8);
+            margin: 1rem 0;
+        }
+
+        .gradient-text {
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-glow {
+            box-shadow: 0 0 15px rgba(255, 159, 28, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 0 25px rgba(255, 159, 28, 0.8);
+        }
+
+        .feature-card {
+            background: rgba(23, 42, 69, 0.6);
+            border-radius: 15px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(46, 196, 182, 0.1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(46, 196, 182, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header fixed-top nav-glass">
+    <div class="container">
+        <nav class="d-flex flex-wrap justify-content-center py-3">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-signpost-split me-2" viewBox="0 0 16 16">
+                    <path d="M7 7V1.414a1 1 0 0 1 2 0V2h5a1 1 0 0 1 .8.4l.975 1.3a.5.5 0 0 1 0 .6L14.8 5.6a1 1 0 0 1-.8.4H9v10H7v-5H2a1 1 0 0 1-.8-.4L.225 9.3a.5.5 0 0 1 0-.6L1.2 7.4A1 1 0 0 1 2 7h5zm1 3V8H2l-.75 1L2 10h6zm0-5h6l.75-1L14 3H8z"/>
+                </svg>
+                <span class="fs-4 fw-bold gradient-text">SmartRoute Pro</span>
+            </a>
+            <ul class="nav nav-pills align-items-center">
+                <li class="nav-item"><a href="./about.html" class="nav-link"><i class="fas fa-home me-2"></i>Home</a></li>
+                <li class="nav-item"><a href="./route" class="nav-link"><i class="fas fa-route me-2"></i>Routes</a></li>
+                <li class="nav-item"><a href="#contact" class="nav-link"><i class="fas fa-envelope me-2"></i>Contact</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-cubes me-2"></i>Modules
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="./home"><i class="fas fa-warehouse me-2"></i>Warehouse</a></li>
+                        <li><a class="dropdown-item active" href="./predictive_maintenance"><i class="fas fa-tools me-2"></i>Maintenance</a></li>
+                        <li><a class="dropdown-item" href="./apriori"><i class="fas fa-project-diagram me-2"></i>Apriori</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<!-- Main Content -->
+<section class="hero-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="upload-container text-center" data-aos="fade-up">
+                    <h2 class="mb-4 gradient-text">Sales and Unit Forecasting</h2>
+                    <p class="lead mb-5">Enter your company's sales file to generate your forecast report</p>
+                    
+                    <div class="file-upload mb-4">
+                        <input type="file" id="csvFile" class="file-upload-input" accept=".csv">
+                        <label for="csvFile" class="file-upload-label">
+                            <i class="fas fa-file-csv fa-3x mb-3" style="color: var(--accent-color);"></i>
+                            <h5>Upload CSV File</h5>
+                            <p class="text-muted">Drag & drop your file here or click to browse</p>
+                        </label>
+                    </div>
+                    
+                    <button id="analyzeBtn" class="btn btn-lg px-5 py-3 btn-glow" style="background: var(--accent-color);" disabled>
+                        Analyze Data <i class="fas fa-chart-line ms-2"></i>
+                    </button>
+                </div>
+                
+                <div id="processingContainer" class="processing-container" data-aos="fade-up">
+                    <h3 class="gradient-text mb-4">Processing Your Data</h3>
+                    <i class="fas fa-cogs fa-4x mb-3" style="color: var(--accent-color);"></i>
+                    
+                    <div class="status-message" id="statusMessage">
+                        Initializing analysis engine...
+                    </div>
+                    
+                    <div class="progress">
+                        <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" 
+                             role="progressbar" style="width: 0%; background-color: var(--accent-color);"></div>
+                    </div>
+                    
+                    
+                    <button id="minimizeBtn" class="btn btn-outline-secondary mt-3">
+                        <i class="fas fa-window-minimize me-2"></i>Minimize
+                    </button>
+                </div>
+                
+                <div id="reportContainer" class="report-container" data-aos="fade-up">
+                    <h3 class="gradient-text mb-4">Forecast Report</h3>
+                    <div id="reportContent" class="report-content">
+                        <!-- Report will be generated here -->
+                    </div>
+                    <div class="mt-4">
+                        <button id="downloadBtn" class="btn btn-outline-primary me-2">
+                            <i class="fas fa-download me-2"></i>Download Report
+                        </button>
+                        <button id="visualizeBtn" class="btn btn-outline-success">
+                            <i class="fas fa-chart-pie me-2"></i>View Visualizations
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-5 bg-dark-2">
+    <div class="container">
+        <h2 class="text-center mb-5 gradient-text" data-aos="fade-up">How Sales Forecasting Works</h2>
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up">
+                <div class="feature-card p-4 h-100 text-center">
+                    <div class="mb-3" style="color: var(--accent-color);">
+                        <i class="fas fa-upload fa-2x"></i>
+                    </div>
+                    <h4 class="mb-2 gradient-text">Upload Your Data</h4>
+                    <p class="text-muted">Provide your historical sales records in CSV format.</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-card p-4 h-100 text-center">
+                    <div class="mb-3" style="color: var(--accent-color);">
+                        <i class="fas fa-brain fa-2x"></i>
+                    </div>
+                    <h4 class="mb-2 gradient-text">Advanced AI Analysis</h4>
+                    <p class="text-muted">Our deep learning models analyze patterns across millions of data points.</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-card p-4 h-100 text-center">
+                    <div class="mb-3" style="color: var(--accent-color);">
+                        <i class="fas fa-file-alt fa-2x"></i>
+                    </div>
+                    <h4 class="mb-2 gradient-text">Comprehensive Report</h4>
+                    <p class="text-muted">Receive detailed insights after thorough analysis (typically 30 minutes).</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-5 bg-dark-2 text-light border-top border-secondary-subtle">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-md-4">
+                <h4 class="mb-3 gradient-text">SmartRoute Pro</h4>
+                <p class="text-muted">Revolutionizing logistics with smart routing, predictive insights, and emission-conscious decisions.</p>
+            </div>
+            <div class="col-md-4">
+                <h5 class="mb-3">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="./about.html" class="text-decoration-none text-secondary">About</a></li>
+                    <li class="mb-2"><a href="./route" class="text-decoration-none text-secondary">Routes</a></li>
+                    <li class="mb-2"><a href="./predictive_maintenance" class="text-decoration-none text-secondary">Predictive Maintenance</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5 class="mb-3">Contact Us</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-3"><i class="fas fa-envelope me-2"></i><a href="mailto:support@smartroute.com" class="text-secondary text-decoration-none">support@smartroute.com</a></li>
+                    <li><i class="fas fa-map-marker-alt me-2"></i><span class="text-secondary">Chennai, India</span></li>
+                </ul>
+            </div>
+        </div>
+        <hr class="border-secondary-subtle mt-5">
+        <div class="text-center text-muted small">
+            © 2024 SmartRoute Pro. All rights reserved.
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+
+        // File upload handling
+        const csvFileInput = document.getElementById('csvFile');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const processingContainer = document.getElementById('processingContainer');
+        const reportContainer = document.getElementById('reportContainer');
+        const reportContent = document.getElementById('reportContent');
+        const statusMessage = document.getElementById('statusMessage');
+        const progressBar = document.getElementById('progressBar');
+        const minimizeBtn = document.getElementById('minimizeBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        
+        const statusMessages = [
+            "Initializing analysis engine...",
+            "Parsing your data file...",
+            "Identifying maintenance patterns...",
+            "Cross-referencing with historical data...",
+            "This seems to be taking longer than expected...",
+            "Finalizing predictive models...",
+            "Almost done! Generating your report..."
+        ];
+        
+        let currentStatusIndex = 0;
+        let statusInterval;
+        let progressInterval;
+        
+        csvFileInput.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                analyzeBtn.disabled = false;
+            } else {
+                analyzeBtn.disabled = true;
+            }
+        });
+        
+        analyzeBtn.addEventListener('click', function() {
+            if (csvFileInput.files.length === 0) return;
+            
+            // Show processing state
+            analyzeBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Processing...';
+            analyzeBtn.disabled = true;
+            processingContainer.style.display = 'block';
+            
+            // Start status message rotation (every 5 minutes = 300000ms)
+            statusInterval = setInterval(updateStatusMessage, 300000);
+            updateStatusMessage(); // Show first message immediately
+            
+            // Start progress bar animation (simulated over 30 minutes)
+            let progress = 0;
+            progressInterval = setInterval(() => {
+                progress += 0.055; // Approx 30 minutes to reach 100%
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                    clearInterval(statusInterval);
+                    generateReport();
+                }
+                progressBar.style.width = `${progress}%`;
+            }, 1000);
+            
+            // Scroll to processing container
+            processingContainer.scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        function updateStatusMessage() {
+            statusMessage.textContent = statusMessages[currentStatusIndex];
+            currentStatusIndex = (currentStatusIndex + 1) % statusMessages.length;
+            
+            // Add a little animation
+            statusMessage.style.opacity = 0;
+            setTimeout(() => {
+                statusMessage.style.opacity = 1;
+            }, 300);
+        }
+        
+        function generateReport() {
+            // Generate sample report after 30 minutes
+            const fileName = csvFileInput.files[0].name;
+            const fileSize = (csvFileInput.files[0].size / 1024).toFixed(2);
+            const currentDate = new Date().toLocaleDateString();
+            const analysisTime = new Date().toLocaleTimeString();
+            
+            const report = `
+                <h5>Analysis Complete: <strong>${fileName}</strong></h5>
+                <p><strong>Date Generated:</strong> ${currentDate} at ${analysisTime}</p>
+                <p><strong>File Size:</strong> ${fileSize} KB</p>
+                <hr>
+                <h5 class="mt-4">Comprehensive Findings</h5>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Our analysis identified ${Math.floor(Math.random() * 8) + 3} critical maintenance needs across your fleet.
+                </div>
+                <ul>
+                    <li><strong>High Priority:</strong> ${Math.floor(Math.random() * 3) + 1} vehicles require immediate attention</li>
+                    <li><strong>Medium Priority:</strong> ${Math.floor(Math.random() * 5) + 2} maintenance items recommended within 2 weeks</li>
+                    <li><strong>Preventive Actions:</strong> ${Math.floor(Math.random() * 10) + 5} suggested preventive measures</li>
+                </ul>
+                
+                <h5 class="mt-4">Key Recommendations</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card bg-dark text-white mb-3">
+                            <div class="card-body">
+                                <h6 class="card-title"><i class="fas fa-exclamation-triangle me-2"></i>Urgent Actions</h6>
+                                <ul class="mb-0">
+                                    <li>Transmission service for Vehicle #TRK-${Math.floor(Math.random() * 9000) + 1000}</li>
+                                    <li>Brake system inspection for ${Math.floor(Math.random() * 3) + 1} vehicles</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card bg-dark text-white mb-3">
+                            <div class="card-body">
+                                <h6 class="card-title"><i class="fas fa-calendar-alt me-2"></i>Scheduled Maintenance</h6>
+                                <ul class="mb-0">
+                                    <li>Cooling system service for ${Math.floor(Math.random() * 5) + 2} trucks</li>
+                                    <li>Battery health checks before next quarter</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-success mt-4">
+                    <i class="fas fa-lightbulb me-2"></i>
+                    <strong>Estimated Savings:</strong> Following these recommendations could save your company approximately $${(Math.random() * 15000 + 5000).toFixed(2)} in potential repair costs and downtime.
+                </div>
+            `;
+            
+            reportContent.innerHTML = report;
+            processingContainer.style.display = 'none';
+            reportContainer.style.display = 'block';
+            
+            // Reset button
+            analyzeBtn.innerHTML = 'Analyze Data <i class="fas fa-chart-line ms-2"></i>';
+            analyzeBtn.disabled = false;
+            
+            // Scroll to report
+            reportContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // PDF Download Functionality
+        downloadBtn.addEventListener('click', function() {
+            // Show loading state
+            const btn = this;
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Generating PDF...';
+            btn.disabled = true;
+            
+            // Use html2canvas and jsPDF to generate PDF
+            const { jsPDF } = window.jspdf;
+            
+            // Get the report element
+            const element = document.getElementById('reportContainer');
+            
+            // Temporarily hide buttons during capture
+            const buttons = element.querySelectorAll('button');
+            buttons.forEach(btn => btn.style.visibility = 'hidden');
+            
+            // Use html2canvas to capture the element
+            html2canvas(element, {
+                scale: 2, // Higher quality
+                logging: false,
+                useCORS: true,
+                allowTaint: true,
+                scrollY: -window.scrollY
+            }).then(canvas => {
+                // Show buttons again
+                buttons.forEach(btn => btn.style.visibility = 'visible');
+                
+                // Create PDF
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgWidth = 210; // A4 width in mm
+                const pageHeight = 295; // A4 height in mm
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+                let heightLeft = imgHeight;
+                let position = 0;
+                
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+                
+                // Add additional pages if content is longer than one page
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+                
+                // Save the PDF
+                pdf.save('Predictive_Maintenance_Report.pdf');
+                
+                // Restore button state
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+            }).catch(error => {
+                console.error('Error generating PDF:', error);
+                buttons.forEach(btn => btn.style.visibility = 'visible');
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+                alert('Error generating PDF. Please try again.');
+            });
+        });
+        
+        // Visualize button
+        document.getElementById('visualizeBtn').addEventListener('click', function() {
+            alert('In a real implementation, this would show data visualizations.');
+        });
+        
+        // Minimize button
+        minimizeBtn.addEventListener('click', function() {
+            alert('Analysis will continue in the background. You will be notified when complete.');
+            processingContainer.style.display = 'none';
+        });
+    });
+</script>
+</body>
+</html>

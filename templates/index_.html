@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forecasting App</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f9;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: auto;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .file-label {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007BFF;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .file-label:hover {
+            background: #0056b3;
+        }
+
+        button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #218838;
+        }
+
+        #forecast-result {
+            margin-top: 20px;
+        }
+
+        #forecast-result img {
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 10px;
+            display: none; /* Initially hidden */
+        }
+
+        /* Loader Animation */
+        .loader {
+            display: none;
+            margin: 20px auto;
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" action="/forecast">
+        <h2>Upload Historical Data (CSV)</h2>
+        <form id="forecast-form" enctype="multipart/form-data">
+            <label for="historical_data" class="file-label">Choose File</label>
+            <input type="file" id="historical_data" name="historical_data" required>
+            <br><br>
+            <button type="submit">Get Forecast</button>
+        </form>
+
+        <h3>Forecast Output:</h3>
+        <div id="forecast-result">
+            <div class="loader"></div>  <!-- Loader added -->
+            <img id="forecast-image" src="forecast.png" alt="Forecast Image">
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $(".file-label").click(function() {
+                $("#historical_data").click();
+            });
+
+            $("#historical_data").change(function() {
+                var fileName = $(this).val().split("\\").pop();
+                $(".file-label").text(fileName ? fileName : "Choose File");
+            });
+
+            $("#forecast-form").on("submit", function(event) {
+                event.preventDefault(); // Prevent default form submission
+
+                $("#forecast-result img").hide(); // Hide image initially
+                $(".loader").show(); // Show loading animation
+
+                // Simulate 20-second delay before showing the image
+                setTimeout(function() {
+                    $(".loader").hide(); // Hide loader
+                    $("#forecast-image").fadeIn(); // Show the forecast image smoothly
+                }, 22361); 
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predictive Maintenance</title>
+    <style>
+        body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    color: #333;
+}
+
+h1, h2 {
+    color: #2c3e50;
+}
+
+form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin-top: 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+p {
+    background-color: #ecf0f1;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+}
+
+span {
+    font-weight: bold;
+    color: #27ae60;
+}
+
+@media (max-width: 480px) {
+    form {
+        padding: 15px;
+    }
+
+    button {
+        padding: 8px 12px;
+    }
+
+    p {
+        padding: 8px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <h1>Predictive Maintenance Model</h1>
+    <form id="predictionForm">
+        <label for="temperature">Temperature (°C):</label>
+        <input type="number" id="temperature" name="temperature" required><br><br>
+        
+        <label for="vibration">Vibration (m/s²):</label>
+        <input type="number" id="vibration" name="vibration" required><br><br>
+        
+        <label for="sound_level">Sound Level (dB):</label>
+        <input type="number" id="sound_level" name="sound_level" required><br><br>
+        
+        <label for="load">Load (%):</label>
+        <input type="number" id="load" name="load" required><br><br>
+        
+        <button type="submit">Predict</button>
+    </form>
+    
+    <h2>Prediction Result:</h2>
+    <p><strong>Failure Status:</strong> <span id="failure_status"></span></p>
+    <p><strong>Failure Type:</strong> <span id="failure_type"></span></p>
+    
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = {
+                temperature: parseFloat(formData.get('temperature')),
+                vibration: parseFloat(formData.get('vibration')),
+                sound_level: parseFloat(formData.get('sound_level')),
+                load: parseFloat(formData.get('load'))
+            };
+            
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('failure_status').innerText = data.failure_status;
+                document.getElementById('failure_type').innerText = data.failure_type;
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card summary-card mb-4">
+    <div class="card-header">
+        Report Summary
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-3">
+                <h5>Total Items</h5>
+                <span class="badge bg-primary">{{ report.stats.total_items }}</span>
+            </div>
+            <div class="col-md-3">
+                <h5>Total Weight</h5>
+                <span class="badge bg-info">{{ "%.2f kg"|format(report.stats.total_weight) }}</span>
+            </div>
+            <div class="col-md-3">
+                <h5>Special Shipments</h5>
+                <span class="badge bg-danger">{{ report.stats.special_count }}</span>
+            </div>
+            <div class="col-md-3">
+                <h5>Regular Shipments</h5>
+                <span class="badge bg-success">{{ report.stats.regular_count }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Special Vehicles Section -->
+<div class="card special-card mb-4">
+    <div class="card-header bg-primary text-white">
+        Refrigerated Vehicles
+    </div>
+    <div class="card-body">
+        {% for destination, vehicles in report.special.items() %}
+        <h4>{{ destination }}</h4>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Vehicle Type</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for vehicle, count in vehicles.items() %}
+                <tr>
+                    <td>{{ vehicle|replace('_', ' ')|title }}</td>
+                    <td>{{ count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Regular Vehicles Section -->
+<div class="card mb-4">
+    <div class="card-header bg-success text-white">
+        Regular Vehicles
+    </div>
+    <div class="card-body">
+        {% for destination, vehicles in report.regular.items() %}
+        <h4>{{ destination }}</h4>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Vehicle Type</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for vehicle, count in vehicles.items() %}
+                <tr>
+                    <td>{{ vehicle|replace('_', ' ')|title }}</td>
+                    <td>{{ count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Detailed Routes -->
+<div class="card">
+    <div class="card-header bg-info text-white">
+        Route Details
+    </div>
+    <div class="card-body">
+        {% for destination, items in report.routes.items() %}
+        <h4 class="mt-3">Route: {{ destination }}</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Weight</th>
+                    <th>Vehicle</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.item }}</td>
+                    <td>{{ "%.2f kg"|format(item.weight) }}</td>
+                    <td>{{ item.vehicle|replace('_', ' ')|title }}</td>
+                    <td>
+                        <span class="badge bg-{{ 'danger' if item.type == 'Special' else 'success' }}">
+                            {{ item.type }}
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

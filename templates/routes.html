@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sustainable Route Planner</title>
+    <style>
+        /* Your CSS code */
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            overflow-y: auto; /* Ensure vertical scrolling */
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .background {
+            background-image: url("../static/images/bg.png");            
+            background-size: cover;
+            background-position: center center;
+            height: 100%;
+            position: relative;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        .background::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.8);
+            animation: fadeIn 2s ease-in-out;
+        }
+        .container {
+            position: relative;
+            margin: 2rem auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            width: 85%;
+            max-width: 550px;
+            animation: fadeIn 2.5s ease-in-out;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 1.8rem;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 2s ease-in-out;
+        }
+        h2 {
+            color: #34495e;
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            animation: fadeIn 2.2s ease-in-out;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            animation: fadeIn 2.4s ease-in-out;
+        }
+        select, input, button {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+        }
+        select:focus, input:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.2);
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s ease, background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        .stop {
+            margin-top: 1rem;
+            padding: 1.2rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            animation: fadeIn 0.8s ease;
+        }
+        label {
+            font-weight: bold;
+            color: #34495e;
+        }
+        .fade-in {
+            animation: fadeIn 1.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <div class="container">
+            <h1>Sustainable Route Planner</h1>
+            <form id="routeForm" method="POST" action="/plan_route">
+                <input type="text" id="startLocation" name="startLocation" placeholder="Enter Start Location">
+                <input type="text" id="endLocation" name="endLocation" placeholder="Enter End Location">
+                
+                <input type="text" id="stops" name="stops" placeholder="Enter stops (if any)">
+                <input type="number" id="cargoWeight" name="cargoWeight" placeholder="Enter cargo weight" required>
+                <label for="vehicle">Select Vehicle Type:</label>
+                <select id="vehicle" name="vehicle" required>
+                    <option value="">Select Vehicle Type For Transportation</option>
+                    <optgroup label="Trucks">
+                        <option value="truck_diesel_manual_6">Diesel Truck - Manual (6 Gears)</option>
+                        <option value="truck_diesel_manual_10">Diesel Truck - Manual (10 Gears)</option>
+                        <option value="truck_cng_manual_6">CNG Truck - Manual (6 Gears)</option>
+                        <option value="truck_electric_auto">Electric Truck - Automatic</option>
+                    </optgroup>
+                    <optgroup label="Cars">
+                        <option value="car_petrol_manual_5">Petrol Car - Manual (5 Gears)</option>
+                        <option value="car_petrol_auto">Petrol Car - Automatic</option>
+                        <option value="car_diesel_manual_6">Diesel Car - Manual (6 Gears)</option>
+                        <option value="car_electric_auto">Electric Car - Automatic</option>
+                    </optgroup>
+                    <optgroup label="Bikes">
+                        <option value="bike_petrol_manual_4">Petrol Bike - Manual (4 Gears)</option>
+                        <option value="bike_petrol_manual_6">Petrol Bike - Manual (6 Gears)</option>
+                        <option value="bike_electric_auto">Electric Bike - Automatic</option>
+                    </optgroup>
+                </select>
+                
+               
+                <label for="airTravel">Is Air Travel Needed?</label>
+                <select id="airTravel" name="airTravel" required>
+                    <option value="">Select option</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+                <div id="stopsContainer"></div>
+                <button type="button" id="addStopButton">Add Stop</button>
+                <button type="submit">Plan Route</button>
+            </form>
+        </div>
+    </div>
+    <script>
+    // Function to dynamically add stop fields
+    const addStopFields = () => {
+        const stopsContainer = document.getElementById('stopsContainer');
+        const stopCount = stopsContainer.children.length;
+        const stopDiv = document.createElement('div');
+        stopDiv.className = 'stop';
+        stopDiv.innerHTML = `
+            <input type="text" name="stopLocation${stopCount}" placeholder="Enter stop location" required>
+            <input type="text" name="ret_drop${stopCount}" placeholder="return/drop" required>
+            <input type="number" name="dropOffWeight${stopCount}" placeholder="Enter drop-off weight" required>`;
+        stopsContainer.appendChild(stopDiv);
+    };
+
+    // Attach event listener to the "Add Stop" button
+    document.getElementById('addStopButton').addEventListener('click', addStopFields);
+
+    // This ensures the DOM is ready before adding event listeners
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('Script loaded and ready!');
+    });
+    document.getElementById('routeForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var formData = new FormData(this);
+
+        fetch('/plan_route', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.href = `/route_map/${data.file}`;
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while generating the route.');
+        });
+    });
+</script>
+
+</body>
+</html>

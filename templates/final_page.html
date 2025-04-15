@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Route Map</title>
+</head>
+<body>
+    <h1>Route Map with Traffic and Weather</h1>
+    <iframe src="route_with_traffic_and_weather.html" width="100%" height="600px"></iframe>
+    <div style="text-align: center;">
+    <a href="fedex-main (5)\fedex-main (4)\fedex-main\Outputs.html" style="display: inline-block; text-decoration: none; color: white; background-color: #007bff; font-size: 18px; font-weight: bold; padding: 10px 20px; border-radius: 8px; text-align: center; transition: background-color 0.3s ease, transform 0.2s ease;margin: 0 auto;" onmouseover="this.style.backgroundColor='#0056b3'; this.style.transform='scale(1.05)';" onmouseout="this.style.backgroundColor='#007bff'; this.style.transform='scale(1)';">Click here to See the Detailed Analysis data for each Route and Segment</a>
+    </div>
+    <pre id="raw_json"></pre>
+    <script>
+        // Fetch the output data from the JSON file
+        
+        document.addEventListener('DOMContentLoaded', function () {
+        fetch('fedex-main (5)/fedex-main (4)/fedex-main/output_data.json')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('co2_emissions').innerText = `CO2 Emissions: 25 kg`;
+            document.getElementById('traffic_info').innerText = `Traffic Info: ${data.traffic_info}`;
+            document.getElementById('weather_info').innerText = `Weather Info: ${data.weather_info}`;
+            document.getElementById('raw_json').innerText = JSON.stringify(data, null, 2);
+        })
+        .catch(error => console.error('Error fetching output data:', error));
+});
+    </script>
+</body>
+</html>
